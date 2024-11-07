@@ -18,9 +18,8 @@ class Animal:
         Animal.alive.append(self)
 
     def __repr__(self) -> str:
-        return (f'kotName: {self.name}, Health: {self.health}, '
-                f'Hidden: {self.hidden}pies').replace(
-            "kot", "{").replace("pies", "}")
+        return (f"{{Name: {self.name}, "
+                f"Health: {self.health}, Hidden: {self.hidden}}}")
 
 
 class Herbivore(Animal):
@@ -40,7 +39,8 @@ class Carnivore(Animal):
     """
     Carnivore class inherit from Animal. Also has
     a method bite, which substract 50 health from
-    Herbivore, if health >= 0, else it's removing
+    Herbivore, if health drops below 0
+    or it's equal 0 after being bitten, else it's removing
     Herbivore from Animal.alive list.
     """
     def bite(self, other: Animal) -> None:
@@ -53,6 +53,7 @@ class Carnivore(Animal):
                 other.health -= 50
                 if other.health <= 0:
                     print(f"{other.name} is dead.")
-                    Animal.alive.remove(other)
+                    if other in Animal.alive:
+                        Animal.alive.remove(other)
                 else:
                     print("Bited")
